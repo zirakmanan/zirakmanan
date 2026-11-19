@@ -72,5 +72,3 @@
 ![Abdul's GitHub stats](https://github-readme-stats.vercel.app/api?username=zirakmanan&show_icons=true&theme=github_dark&hide_border=true)
 ![Top languages](https://github-readme-stats.vercel.app/api/top-langs/?username=zirakmanan&layout=compact&theme=github_dark&hide_border=true)
 ![Streak](https://streak-stats.demolab.com/?user=zirakmanan&theme=github-dark&hide_border=true)
-
--->
