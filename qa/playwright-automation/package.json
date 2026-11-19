@@ -1,10 +1,11 @@
 {
   "name": "playwright-qa-portfolio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Portfolio-ready UI and API automation framework using Playwright and TypeScript",
   "scripts": {
     "test": "playwright test",
+    "test:ci": "npm run typecheck && playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:api": "playwright test tests/api",
