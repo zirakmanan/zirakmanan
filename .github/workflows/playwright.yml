@@ -1,7 +1,7 @@
 name: Playwright QA
 
 on:
-  # Run every day at 12:00 UTC (7:00 AM Eastern Standard Time).
+  # Run daily at 12:00 UTC (7 AM EST / 8 AM EDT).
   schedule:
     - cron: '0 12 * * *'
   push:
@@ -36,8 +36,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: qa/playwright-automation/package-lock.json
       - name: Install dependencies
         run: npm install
       - name: Check TypeScript
