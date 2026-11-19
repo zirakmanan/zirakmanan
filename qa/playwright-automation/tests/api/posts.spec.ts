@@ -16,6 +16,18 @@ test.describe('JSONPlaceholder Posts API', () => {
     });
   });
 
+  test('GET /posts supports query filtering', async ({ request }) => {
+    const response = await request.get(`${apiBaseUrl}/posts`, {
+      params: { userId: 1 },
+    });
+    expect(response.status()).toBe(200);
+
+    const posts = await response.json();
+    expect(Array.isArray(posts)).toBe(true);
+    expect(posts.length).toBeGreaterThan(0);
+    expect(posts.every((post: { userId: number }) => post.userId === 1)).toBe(true);
+  });
+
   test('POST /posts creates a post-shaped response', async ({ request }) => {
     const response = await request.post(`${apiBaseUrl}/posts`, {
       data: { title: 'Playwright API test', body: 'Created by an automated test', userId: 1 },
