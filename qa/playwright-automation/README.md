@@ -1,24 +1,18 @@
 # Playwright QA Automation Framework
 
-A portfolio project demonstrating end-to-end UI automation and REST API testing with **Playwright + TypeScript**.
+A TypeScript-based UI and REST API automation project built with Playwright Test.
 
 ## Coverage
-- UI: TodoMVC task creation and completion journeys
-- API: JSONPlaceholder GET, query-filtering, and POST checks
-- Design: Page Object Model for reusable UI interactions
-- Quality: TypeScript compile-time checks before browser tests
-- Diagnostics: HTML report, screenshots and video on failure, trace on retry
-- CI/CD: GitHub Actions on pushes, pull requests, manual dispatch, and a daily scheduled run
 
-## Daily automation
-GitHub Actions runs the suite every day at **12:00 UTC** (7:00 AM Eastern Standard Time). You can also start a run manually from the repository's **Actions → Playwright QA → Run workflow** page.
+| Layer | Scenarios |
+| --- | --- |
+| UI | Create tasks, complete tasks, filter active and completed tasks |
+| API | Retrieve a post, filter posts by user, create a post-shaped response |
 
-## Requirements
-- Node.js 20+
-- npm
+## Quick start
 
-## Run locally
-From this directory:
+Requirements: Node.js 20+ and npm.
+
 ```bash
 npm install
 npx playwright install chromium
@@ -26,16 +20,26 @@ npm run typecheck
 npm test
 ```
 
-Run only one test layer:
-```bash
-npm run test:ui-tests
-npm run test:api
-```
+## Useful commands
 
-Open the report:
-```bash
-npm run report
-```
+- `npm test` — run the full suite
+- `npm run test:ui-tests` — run browser tests
+- `npm run test:api` — run API tests
+- `npm run typecheck` — validate TypeScript
+- `npm run report` — open the latest HTML report
 
-## Test environment
-The API uses JSONPlaceholder, a public fake REST API intended for testing and examples. Its POST endpoint simulates creation and does not persist data. The UI suite uses the public Playwright TodoMVC demo site.
+## Engineering practices
+
+- Page Object Model keeps UI selectors and actions reusable.
+- Role, placeholder, and test-id locators make UI intent clear.
+- Playwright's auto-retrying assertions reduce timing-related flakiness.
+- CI validates TypeScript before running browser and API tests.
+- Screenshots, videos, traces, and HTML reports support failure investigation.
+
+## CI schedule
+
+GitHub Actions runs daily at 12:00 UTC (7:00 AM EST / 8:00 AM EDT), and on relevant pushes, pull requests, and manual dispatch.
+
+## Test services
+
+The UI suite uses the public Playwright TodoMVC demo. API tests use JSONPlaceholder; its POST endpoint simulates creation and does not persist data.
