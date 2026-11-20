@@ -7,14 +7,20 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.open();
     await todo.addTodo('Prepare Playwright portfolio');
     await todo.expectTodo('Prepare Playwright portfolio');
+    await expect(todo.items).toHaveCount(1);
   });
 
   test('user can complete a task', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
     await todo.addTodo('Review API automation');
-    const item = todo.items.filter({ hasText: 'Review API automation' });
-    await item.getByRole('checkbox').check();
-    await expect(item).toHaveClass(/completed/);
+    await todo.completeTodo('Review API automation');
+  });
+
+  test('user can delete a task', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Remove obsolete test task');
+    await todo.deleteTodo('Remove obsolete test task');
   });
 });
