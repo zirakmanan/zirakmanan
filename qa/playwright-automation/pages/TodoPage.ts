@@ -12,7 +12,7 @@ export class TodoPage {
   }
 
   async open(): Promise<void> {
-    await this.page.goto('/');
+    await this.page.goto('./');
   }
 
   async addTodo(title: string): Promise<void> {
