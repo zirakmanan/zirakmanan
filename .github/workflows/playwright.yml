@@ -1,7 +1,7 @@
 name: Playwright QA
 
 on:
-  # Run daily at 12:00 UTC (7 AM EST / 8 AM EDT).
+  # 12:00 UTC = 7 AM EST / 8 AM EDT.
   schedule:
     - cron: '0 12 * * *'
   push:
@@ -17,9 +17,10 @@ on:
 permissions:
   contents: read
 
+# Queue runs for the same ref instead of cancelling a useful in-progress run.
 concurrency:
   group: playwright-qa-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   test:
