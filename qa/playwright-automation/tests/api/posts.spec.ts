@@ -1,5 +1,7 @@
 import { test, expect, type APIResponse } from '@playwright/test';
 
+const apiBaseUrl = 'https://jsonplaceholder.typicode.com';
+
 type Post = {
   userId: number;
   id: number;
@@ -86,5 +88,3 @@ test.describe('JSONPlaceholder Posts API', () => {
     });
   });
 });
-
-const apiBaseUrl = 'https://jsonplaceholder.typicode.com';
