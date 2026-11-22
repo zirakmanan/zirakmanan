@@ -6,8 +6,8 @@ A TypeScript-based UI and REST API automation project built with Playwright Test
 
 | Layer | Scenarios |
 | --- | --- |
-| UI | Create tasks, complete tasks, filter active and completed tasks |
-| API | Retrieve a post, filter posts by user, create a post-shaped response |
+| UI | Create, edit, complete, filter, and clear completed tasks |
+| API | Retrieve a post, filter posts (including empty results), validate and create a post-shaped response |
 
 ## Quick start
 
