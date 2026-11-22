@@ -25,6 +25,10 @@ export class TodoPage {
     await item.getByRole('checkbox').check();
   }
 
+  async clearCompleted() {
+    await this.page.getByRole('button', { name: 'Clear completed' }).click();
+  }
+
   async filterBy(filter: TodoFilter) {
     await this.page.getByRole('link', { name: filter, exact: true }).click();
   }
