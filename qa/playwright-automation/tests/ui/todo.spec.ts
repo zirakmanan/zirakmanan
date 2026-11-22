@@ -37,4 +37,18 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoHidden('Completed task');
     await todo.expectTodoCount(1);
   });
+
+  test('user can clear completed tasks without removing active tasks', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Keep this active task');
+    await todo.addTodo('Remove this completed task');
+    await todo.completeTodo('Remove this completed task');
+
+    await todo.clearCompleted();
+
+    await todo.expectTodo('Keep this active task');
+    await todo.expectTodoHidden('Remove this completed task');
+    await todo.expectTodoCount(1);
+  });
 });
