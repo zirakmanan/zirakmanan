@@ -38,6 +38,17 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoCount(1);
   });
 
+  test('user can edit a task without creating a duplicate', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Draft task');
+    await todo.editTodo('Draft task', 'Updated task');
+
+    await todo.expectTodo('Updated task');
+    await todo.expectTodoHidden('Draft task');
+    await todo.expectTodoCount(1);
+  });
+
   test('user can clear completed tasks without removing active tasks', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
