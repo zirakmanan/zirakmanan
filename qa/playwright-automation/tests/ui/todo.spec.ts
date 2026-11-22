@@ -10,6 +10,15 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoCount(1);
   });
 
+  test('user cannot add empty or whitespace-only tasks', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('');
+    await todo.addTodo('   ');
+
+    await todo.expectTodoCount(0);
+  });
+
   test('user can complete a task', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
