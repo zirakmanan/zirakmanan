@@ -19,7 +19,8 @@ permissions:
 
 concurrency:
   group: playwright-qa-${{ github.ref }}
-  cancel-in-progress: true
+  # Keep main-branch and scheduled runs intact; cancel only superseded PR runs.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
