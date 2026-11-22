@@ -69,6 +69,21 @@ test.describe('JSONPlaceholder Posts API', () => {
     expect(posts.every((post) => post.userId === 1)).toBe(true);
   });
 
+  test('GET /posts returns an empty list when no user matches', async ({ request }) => {
+    const response = await request.get(`${apiBaseUrl}/posts`, {
+      params: { userId: 9999 },
+    });
+    expectJsonResponse(response, 200);
+
+    const posts: unknown = await response.json();
+    expect(isPostList(posts)).toBe(true);
+    if (!isPostList(posts)) {
+      throw new Error('GET /posts?userId=9999 returned an invalid posts payload.');
+    }
+
+    expect(posts).toEqual([]);
+  });
+
   test('POST /posts creates a post-shaped response', async ({ request }) => {
     const response = await request.post(`${apiBaseUrl}/posts`, {
       data: { title: 'Playwright API test', body: 'Created by an automated test', userId: 1 },
