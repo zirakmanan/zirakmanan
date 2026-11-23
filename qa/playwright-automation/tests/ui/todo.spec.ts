@@ -87,4 +87,17 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoHidden('Remove this completed task');
     await todo.expectTodoCount(1);
   });
+
+  test('user can delete one task without removing other tasks', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Keep this task');
+    await todo.addTodo('Delete this task');
+
+    await todo.deleteTodo('Delete this task');
+
+    await todo.expectTodo('Keep this task');
+    await todo.expectTodoHidden('Delete this task');
+    await todo.expectTodoCount(1);
+  });
 });
