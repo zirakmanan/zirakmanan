@@ -100,4 +100,23 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoHidden('Delete this task');
     await todo.expectTodoCount(1);
   });
+
+  test('user tasks and completion state persist after reload', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Persist active task');
+    await todo.addTodo('Persist completed task');
+    await todo.completeTodo('Persist completed task');
+
+    await page.reload();
+
+    await todo.expectTodo('Persist active task');
+    await todo.expectTodo('Persist completed task');
+    await todo.expectTodoCount(2);
+
+    const activeItem = todo.items.filter({ hasText: 'Persist active task' });
+    const completedItem = todo.items.filter({ hasText: 'Persist completed task' });
+    await expect(activeItem).not.toHaveClass(/completed/);
+    await expect(completedItem).toHaveClass(/completed/);
+  });
 });
