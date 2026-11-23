@@ -29,6 +29,12 @@ export class TodoPage {
     await this.page.getByRole('button', { name: 'Clear completed' }).click();
   }
 
+  async deleteTodo(title: string) {
+    const item = this.items.filter({ hasText: title });
+    await item.hover();
+    await item.locator('button.destroy').click();
+  }
+
   async editTodo(currentTitle: string, updatedTitle: string) {
     const item = this.items.filter({ hasText: currentTitle });
     await item.locator('label').dblclick();
