@@ -29,6 +29,22 @@ test.describe('TodoMVC - core user journeys', () => {
     await expect(item).toHaveClass(/completed/);
   });
 
+  test('user can complete a task with the keyboard', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Keyboard accessible task');
+
+    const item = todo.items.filter({ hasText: 'Keyboard accessible task' });
+    const checkbox = item.getByRole('checkbox');
+
+    await checkbox.focus();
+    await expect(checkbox).toBeFocused();
+    await checkbox.press('Space');
+
+    await expect(checkbox).toBeChecked();
+    await expect(item).toHaveClass(/completed/);
+  });
+
   test('user can filter completed tasks', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
