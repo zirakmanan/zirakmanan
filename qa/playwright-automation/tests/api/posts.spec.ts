@@ -40,6 +40,35 @@ function expectJsonResponse(response: APIResponse, status: number) {
 }
 
 test.describe('JSONPlaceholder Posts API', () => {
+  test('post contract guards reject malformed payloads', () => {
+    const validPost: Post = {
+      userId: 1,
+      id: 1,
+      title: 'A valid title',
+      body: 'A valid body',
+    };
+    const malformedPosts: unknown[] = [
+      null,
+      { ...validPost, userId: 0 },
+      { ...validPost, userId: 1.5 },
+      { ...validPost, id: 0 },
+      { ...validPost, id: 1.5 },
+      { ...validPost, title: '' },
+      { ...validPost, title: '   ' },
+      { ...validPost, title: 42 },
+      { ...validPost, body: '' },
+      { ...validPost, body: '   ' },
+      { ...validPost, body: null },
+    ];
+
+    for (const malformedPost of malformedPosts) {
+      expect(isPost(malformedPost)).toBe(false);
+    }
+
+    expect(isPostList({})).toBe(false);
+    expect(isPostList([validPost, null])).toBe(false);
+  });
+
   test('GET /posts/1 returns a valid post', async ({ request }) => {
     const response = await request.get(`${apiBaseUrl}/posts/1`);
     expectJsonResponse(response, 200);
