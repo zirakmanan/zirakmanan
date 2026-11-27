@@ -101,6 +101,22 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoCount(1);
   });
 
+  test('matches todo titles exactly when one title contains another', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Task [1]');
+    await todo.addTodo('Task [1] extended');
+
+    await todo.completeTodo('Task [1]');
+    await todo.expectTodoCompleted('Task [1]');
+    await todo.expectTodoActive('Task [1] extended');
+
+    await todo.deleteTodo('Task [1] extended');
+    await todo.expectTodo('Task [1]');
+    await todo.expectTodoHidden('Task [1] extended');
+    await todo.expectTodoCount(1);
+  });
+
   test('user tasks and completion state persist after reload', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
