@@ -11,6 +11,11 @@ export class TodoPage {
     this.items = page.getByTestId('todo-item');
   }
 
+  private itemByTitle(title: string) {
+    const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return this.items.filter({ hasText: new RegExp(`^\\s*${escapedTitle}\\s*$`) });
+  }
+
   async open() {
     await this.page.goto('https://demo.playwright.dev/todomvc/');
   }
@@ -21,8 +26,7 @@ export class TodoPage {
   }
 
   async completeTodo(title: string) {
-    const item = this.items.filter({ hasText: title });
-    await item.getByRole('checkbox').check();
+    await this.itemByTitle(title).getByRole('checkbox').check();
   }
 
   async clearCompleted() {
@@ -30,13 +34,13 @@ export class TodoPage {
   }
 
   async deleteTodo(title: string) {
-    const item = this.items.filter({ hasText: title });
+    const item = this.itemByTitle(title);
     await item.hover();
     await item.locator('button.destroy').click();
   }
 
   async editTodo(currentTitle: string, updatedTitle: string) {
-    const item = this.items.filter({ hasText: currentTitle });
+    const item = this.itemByTitle(currentTitle);
     await item.locator('label').dblclick();
 
     const editor = item.locator('input.edit');
@@ -49,11 +53,19 @@ export class TodoPage {
   }
 
   async expectTodo(title: string) {
-    await expect(this.items.filter({ hasText: title })).toBeVisible();
+    await expect(this.itemByTitle(title)).toBeVisible();
   }
 
   async expectTodoHidden(title: string) {
-    await expect(this.items.filter({ hasText: title })).toBeHidden();
+    await expect(this.itemByTitle(title)).toBeHidden();
+  }
+
+  async expectTodoCompleted(title: string) {
+    await expect(this.itemByTitle(title)).toHaveClass(/completed/);
+  }
+
+  async expectTodoActive(title: string) {
+    await expect(this.itemByTitle(title)).not.toHaveClass(/completed/);
   }
 
   async expectTodoCount(count: number) {
