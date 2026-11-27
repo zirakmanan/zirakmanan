@@ -59,4 +59,9 @@ export class TodoPage {
   async expectTodoCount(count: number) {
     await expect(this.items).toHaveCount(count);
   }
+
+  async expectRemainingCount(count: number) {
+    const label = count === 1 ? 'item' : 'items';
+    await expect(this.page.locator('.todo-count')).toHaveText(`${count} ${label} left`);
+  }
 }

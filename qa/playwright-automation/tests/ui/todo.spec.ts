@@ -19,6 +19,22 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoCount(0);
   });
 
+  test('remaining count updates and uses singular and plural labels', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('First count task');
+    await todo.expectRemainingCount(1);
+
+    await todo.addTodo('Second count task');
+    await todo.expectRemainingCount(2);
+
+    await todo.completeTodo('First count task');
+    await todo.expectRemainingCount(1);
+
+    await todo.completeTodo('Second count task');
+    await todo.expectRemainingCount(0);
+  });
+
   test('user can complete a task', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
