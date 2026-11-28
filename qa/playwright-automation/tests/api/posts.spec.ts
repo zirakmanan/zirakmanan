@@ -84,6 +84,27 @@ test.describe('JSONPlaceholder Posts API', () => {
     expect(posts).toEqual([]);
   });
 
+  test('PUT /posts/1 replaces a post and returns the updated contract', async ({ request }) => {
+    const update = {
+      userId: 1,
+      id: 1,
+      title: 'Updated post via PUT',
+      body: 'The full post was replaced by an automated test.',
+    };
+    const response = await request.put(`${apiBaseUrl}/posts/1`, {
+      data: update,
+    });
+    expectJsonResponse(response, 200);
+
+    const updated: unknown = await response.json();
+    expect(isPost(updated)).toBe(true);
+    if (!isPost(updated)) {
+      throw new Error('PUT /posts/1 returned an invalid post payload.');
+    }
+
+    expect(updated).toEqual(update);
+  });
+
   test('POST /posts creates a post-shaped response', async ({ request }) => {
     const response = await request.post(`${apiBaseUrl}/posts`, {
       data: { title: 'Playwright API test', body: 'Created by an automated test', userId: 1 },
