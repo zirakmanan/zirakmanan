@@ -102,4 +102,12 @@ test.describe('JSONPlaceholder Posts API', () => {
       userId: 1,
     });
   });
+
+  test('DELETE /posts/1 returns an empty object for simulated deletion', async ({ request }) => {
+    const response = await request.delete(`${apiBaseUrl}/posts/1`);
+    expectJsonResponse(response, 200);
+
+    const deleted: unknown = await response.json();
+    expect(deleted).toEqual({});
+  });
 });
