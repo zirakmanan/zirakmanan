@@ -45,6 +45,34 @@ test.describe('TodoMVC - core user journeys', () => {
     await expect(item).toHaveClass(/completed/);
   });
 
+  test('user can toggle all tasks and keep the bulk checkbox in sync', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.addTodo('Bulk task one');
+    await todo.addTodo('Bulk task two');
+
+    const toggleAll = page.getByLabel('Mark all as complete');
+    await toggleAll.check();
+    await expect(toggleAll).toBeChecked();
+    await expect(todo.items.nth(0).getByRole('checkbox')).toBeChecked();
+    await expect(todo.items.nth(1).getByRole('checkbox')).toBeChecked();
+    await expect(page.locator('.todo-count')).toHaveText('0 items left');
+
+    await todo.items.nth(0).getByRole('checkbox').uncheck();
+    await expect(toggleAll).not.toBeChecked();
+    await expect(page.locator('.todo-count')).toHaveText('1 item left');
+
+    await todo.items.nth(0).getByRole('checkbox').check();
+    await expect(toggleAll).toBeChecked();
+    await expect(page.locator('.todo-count')).toHaveText('0 items left');
+
+    await toggleAll.uncheck();
+    await expect(toggleAll).not.toBeChecked();
+    await expect(todo.items.nth(0).getByRole('checkbox')).not.toBeChecked();
+    await expect(todo.items.nth(1).getByRole('checkbox')).not.toBeChecked();
+    await expect(page.locator('.todo-count')).toHaveText('2 items left');
+  });
+
   test('user can filter completed tasks', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();
