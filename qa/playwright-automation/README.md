@@ -11,7 +11,7 @@ A TypeScript-based UI and REST API automation project built with Playwright Test
 
 ## Quick start
 
-Requirements: Node.js 20+ and npm.
+Requirements: Node.js 24+ and npm.
 
 ```bash
 npm install
