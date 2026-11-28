@@ -74,6 +74,24 @@ test.describe('TodoMVC - core user journeys', () => {
     await todo.expectTodoCount(1);
   });
 
+  test('Clear completed button is hidden until a task is completed', async ({ page }) => {
+    const todo = new TodoPage(page);
+    await todo.open();
+    await todo.expectClearCompletedHidden();
+
+    await todo.addTodo('Active task');
+    await todo.expectClearCompletedHidden();
+
+    await todo.addTodo('Completed task');
+    await todo.completeTodo('Completed task');
+    await todo.expectClearCompletedVisible();
+
+    await todo.clearCompleted();
+    await todo.expectClearCompletedHidden();
+    await todo.expectTodo('Active task');
+    await todo.expectTodoCount(1);
+  });
+
   test('user can clear completed tasks without removing active tasks', async ({ page }) => {
     const todo = new TodoPage(page);
     await todo.open();

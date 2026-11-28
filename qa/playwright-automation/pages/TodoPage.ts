@@ -5,10 +5,12 @@ export type TodoFilter = 'All' | 'Active' | 'Completed';
 export class TodoPage {
   readonly newTodo: Locator;
   readonly items: Locator;
+  readonly clearCompletedButton: Locator;
 
   constructor(private readonly page: Page) {
     this.newTodo = page.getByPlaceholder('What needs to be done?');
     this.items = page.getByTestId('todo-item');
+    this.clearCompletedButton = page.getByRole('button', { name: 'Clear completed' });
   }
 
   async open() {
@@ -26,7 +28,7 @@ export class TodoPage {
   }
 
   async clearCompleted() {
-    await this.page.getByRole('button', { name: 'Clear completed' }).click();
+    await this.clearCompletedButton.click();
   }
 
   async deleteTodo(title: string) {
@@ -54,6 +56,14 @@ export class TodoPage {
 
   async expectTodoHidden(title: string) {
     await expect(this.items.filter({ hasText: title })).toBeHidden();
+  }
+
+  async expectClearCompletedVisible() {
+    await expect(this.clearCompletedButton).toBeVisible();
+  }
+
+  async expectClearCompletedHidden() {
+    await expect(this.clearCompletedButton).toBeHidden();
   }
 
   async expectTodoCount(count: number) {
